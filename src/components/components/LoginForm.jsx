@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { loginSchema } from '../../schemas/validationSchema';
-import { logInApi } from '../../API/authApis';
+import { adminLogInApi, logInApi } from '../../API/authApis';
 import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 
 const LoginForm = ({ location }) => {
-
+    const navigate = useNavigate()
     const [formValues, setFormValues] = useState({
         email: '',
         password: '',
@@ -19,9 +20,17 @@ const LoginForm = ({ location }) => {
         onSubmit: async (values, action) => {
             setLoading(true)
             try {
-                const result = await logInApi(values)
-                navigate('/')
+                const { data } =
+                    location === 'admin' ?
+                        await adminLogInApi(values) : await logInApi(values)
+                toast.success(data.message)
+                if (data.success) {
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("user", JSON.stringify(data.userDetails));
+                    navigate('/')
+                }
             } catch (error) {
+                toast.error(error.response.data.message)
                 console.log(error, 'Login failed');
             }
             action.resetForm();
@@ -64,7 +73,7 @@ const LoginForm = ({ location }) => {
                         <p className="text-danger text-center">{errors.password}</p>
                     ) : null}
                 </div>
-                <button type="submit" className="btn btn-primary w-100">
+                <button type={loading ? 'button' : 'submit'} className="btn btn-primary w-100">
                     {
                         loading ?
                             <div className="spinner-border" role="status">
