@@ -7,17 +7,19 @@ import AdminLogin from './components/pages/AdminLogin'
 import AdminSign from './components/pages/AdminSign'
 import AdminHome from './components/pages/AdminHome'
 import ErrorPage from './components/pages/ErrorPage'
+import ProtectedRouteUser from './components/components/ProtectedRouteUser'
+import ProtectedRouteAdmin from './components/components/ProtectedRouteAdmin'
 
 const App = () => {
   return (
     <div className='vh-100'>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/admin/home' element={<ProtectedRouteAdmin element={<AdminHome />} />} />
+        <Route path='/' element={<ProtectedRouteUser element={<Home />} />} />
         <Route path='/login' element={<Login />} />
         <Route path='/SignUp' element={<SignUp />} />
         <Route path='/admin/login' element={<AdminLogin />} />
         <Route path='/admin/signUp' element={<AdminSign />} />
-        <Route path='/admin/home' element={<AdminHome />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </div>

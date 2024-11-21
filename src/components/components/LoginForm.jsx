@@ -27,7 +27,7 @@ const LoginForm = ({ location }) => {
                 if (data.success) {
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("user", JSON.stringify(data.userDetails));
-                    navigate('/')
+                    navigate('/admin/home')
                 }
             } catch (error) {
                 toast.error(error.response.data.message)
@@ -84,7 +84,7 @@ const LoginForm = ({ location }) => {
             </form>
             <p className="text-center mt-3">
                 Need a new Account
-                <Link to={'/signUp'}> <span>click here</span></Link>
+                <Link to={location === 'admin' ?'/admin/signUp':'/signUp'}> <span>click here</span></Link>
             </p>
         </div>
     )

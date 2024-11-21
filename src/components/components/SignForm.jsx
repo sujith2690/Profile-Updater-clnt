@@ -119,7 +119,7 @@ const SignForm = ({ location }) => {
             </form>
             <p className="text-center mt-3">
                 Already have an account
-                <Link to={'/login'}> <span>click here</span></Link>
+                <Link to={location === 'admin' ?'/admin/login':'/login'}> <span>click here</span></Link>
             </p>
         </div>
     )
